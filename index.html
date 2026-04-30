@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MathFormulaGame - Ghanaian mathematics formulas and cheatsheet website with game mechanics for JHS and SHS students">
+    <meta name="theme-color" content="#1e293b">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>MathFormulaGame - Ghana</title>
+</head>
+<body>
+    <div id="app">
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-calculator"></i>
+                    <span>MathFormulaGame</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="curriculum-badge">
+                <i class="fas fa-graduation-cap"></i>
+                <span>MOE/NTC Curriculum</span>
+            </div>
+        </header>
+
+        <nav class="main-nav">
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="formulas">
+                    <i class="fas fa-book"></i>
+                    <span>Formulas</span>
+                </button>
+                <button class="nav-tab" data-tab="game">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Play</span>
+                </button>
+                <button class="nav-tab" data-tab="progress">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Progress</span>
+                </button>
+                <button class="nav-tab" data-tab="leaderboard">
+                    <i class="fas fa-trophy"></i>
+                    <span>Scores</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <section class="tab-content active" id="formulas-tab">
+                <div class="user-login">
+                    <div class="login-card">
+                        <h3>Welcome Student!</h3>
+                        <input type="text" id="studentName" placeholder="Enter your name" maxlength="20">
+                        <button class="btn-primary" id="loginBtn">Start Learning</button>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search formulas...">
+                    </div>
+                    <div class="filter-buttons">
+                        <select id="levelFilter" class="filter-select">
+                            <option value="all">All Levels</option>
+                            <option value="jhs">JHS (Forms 1-3)</option>
+                            <option value="shs">SHS (Forms 1-3)</option>
+                        </select>
+                        <select id="topicFilter" class="filter-select">
+                            <option value="all">All Topics</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="formulas-grid" id="formulasGrid">
+                </div>
+            </section>
+
+            <section class="tab-content" id="game-tab">
+                <div class="game-setup">
+                    <h2>Formula Master</h2>
+                    <div class="game-modes">
+                        <button class="mode-card active" data-mode="match">
+                            <i class="fas fa-balance-scale"></i>
+                            <h3>Match the Formula</h3>
+                            <p>Choose the correct formula from 4 options</p>
+                        </button>
+                        <button class="mode-card" data-mode="fill">
+                            <i class="fas fa-pen-fancy"></i>
+                            <h3>Fill the Blank</h3>
+                            <p>Complete the missing term</p>
+                        </button>
+                        <button class="mode-card" data-mode="calc">
+                            <i class="fas fa-calculator"></i>
+                            <h3>Quick Calculation</h3>
+                            <p>Solve the numerical problem</p>
+                        </button>
+                    </div>
+                    <div class="game-level">
+                        <label>Select Level:</label>
+                        <select id="gameLevel">
+                            <option value="jhs">JHS (Forms 1-3)</option>
+                            <option value="shs">SHS (Forms 1-3)</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary btn-large" id="startGameBtn">
+                        <i class="fas fa-play"></i> Start Game
+                    </button>
+                </div>
+
+                <div class="game-area" id="gameArea" style="display: none;">
+                    <div class="game-header">
+                        <div class="game-stats">
+                            <div class="stat">
+                                <span class="stat-label">Score</span>
+                                <span class="stat-value" id="score">0</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Time</span>
+                                <span class="stat-value" id="timer">60s</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Streak</span>
+                                <span class="stat-value" id="streak">0</span>
+                            </div>
+                        </div>
+                        <button class="btn-secondary" id="quitGameBtn">Quit</button>
+                    </div>
+
+                    <div class="game-question" id="gameQuestion">
+                    </div>
+
+                    <div class="game-options" id="gameOptions">
+                    </div>
+
+                    <div class="game-feedback" id="gameFeedback">
+                    </div>
+                </div>
+
+                <div class="game-result" id="gameResult" style="display: none;">
+                    <div class="result-card">
+                        <i class="fas fa-flag-checkered"></i>
+                        <h3>Game Over!</h3>
+                        <div class="final-score">
+                            <span>Final Score:</span>
+                            <span id="finalScore">0</span>
+                        </div>
+                        <div class="accuracy">
+                            <span>Accuracy:</span>
+                            <span id="accuracy">0%</span>
+                        </div>
+                        <div class="medal" id="medal">
+                        </div>
+                        <button class="btn-primary" id="playAgainBtn">Play Again</button>
+                        <button class="btn-secondary" id="backToMenuBtn">Back to Menu</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-content" id="progress-tab">
+                <div class="progress-overview">
+                    <div class="overview-card">
+                        <h3>Your Progress</h3>
+                        <div class="overview-stats">
+                            <div class="overview-stat">
+                                <i class="fas fa-eye"></i>
+                                <span>Topics Viewed</span>
+                                <span class="count" id="topicsViewed">0</span>
+                            </div>
+                            <div class="overview-stat">
+                                <i class="fas fa-medal"></i>
+                                <span>Gold Medals</span>
+                                <span class="count" id="goldMedals">0</span>
+                            </div>
+                            <div class="overview-stat">
+                                <i class="fas fa-medal"></i>
+                                <span>Silver Medals</span>
+                                <span class="count" id="silverMedals">0</span>
+                            </div>
+                            <div class="overview-stat">
+                                <i class="fas fa-medal"></i>
+                                <span>Bronze Medals</span>
+                                <span class="count" id="bronzeMedals">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topics-progress" id="topicsProgress">
+                </div>
+            </section>
+
+            <section class="tab-content" id="leaderboard-tab">
+                <div class="leaderboard-section">
+                    <div class="leaderboard-header">
+                        <h2>Leaderboard</h2>
+                        <select id="leaderboardLevel">
+                            <option value="jhs">JHS</option>
+                            <option value="shs">SHS</option>
+                        </select>
+                    </div>
+                    <div class="leaderboard-list" id="leaderboardList">
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>MathFormulaGame - Ghanaian Education</p>
+            <p class="offline-status" id="offlineStatus">
+                <i class="fas fa-wifi"></i> Online
+            </p>
+        </footer>
+    </div>
+
+    <div class="offline-banner" id="offlineBanner" style="display: none;">
+        <i class="fas fa-cloud-download-alt"></i>
+        <span>You're offline - Formulas available offline!</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="script.js"></script>
+</body>
+</html>
